@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="AnnaRose Beckett-Herbert">
+<meta name="dcterms.date" content="2026-10-27">
+
+<title>Data Story</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="data_cleaning_files/libs/clipboard/clipboard.min.js"></script>
+<script src="data_cleaning_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="data_cleaning_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="data_cleaning_files/libs/quarto-html/popper.min.js"></script>
+<script src="data_cleaning_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="data_cleaning_files/libs/quarto-html/anchor.min.js"></script>
+<link href="data_cleaning_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="data_cleaning_files/libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="data_cleaning_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="data_cleaning_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="data_cleaning_files/libs/bootstrap/bootstrap-917079515d91bccb85b543faf8aa8bb6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data Story</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>AnnaRose Beckett-Herbert </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 27, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="setup-cleaning-and-testing" class="level1">
+<h1>Setup, Cleaning, and Testing</h1>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>First things first: reading in my data!</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.3     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"/Users/annarosebeckett-herbert/Desktop/quant/data_story/data/data_story_data.csv"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "REF_DATE"          "GEO"               "DGUID"            
+ [4] "Age.group.in.2019" "Gender.in.2019"    "Status"           
+ [7] "Indicators"        "Characteristics"   "UOM"              
+[10] "UOM_ID"            "SCALAR_FACTOR"     "SCALAR_ID"        
+[13] "VECTOR"            "COORDINATE"        "VALUE"            
+[16] "STATUS"            "SYMBOL"            "TERMINATED"       
+[19] "DECIMALS"         </code></pre>
+</div>
+</div>
+</section>
+<section id="initial-inspection" class="level2">
+<h2 class="anchored" data-anchor-id="initial-inspection">Initial Inspection</h2>
+<p>Before making any changes, I want to inspect the dataset and check the variables and categories it contains.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the dimensions of the dataset</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 54648    19</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check variable names and data types</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   54648 obs. of  19 variables:
+ $ REF_DATE         : int  2023 2023 2023 2023 2023 2023 2023 2023 2023 2023 ...
+ $ GEO              : chr  "Canada" "Canada" "Canada" "Canada" ...
+ $ DGUID            : chr  "" "" "" "" ...
+ $ Age.group.in.2019: chr  "Total, 12 to 17 years" "Total, 12 to 17 years" "Total, 12 to 17 years" "Total, 12 to 17 years" ...
+ $ Gender.in.2019   : chr  "Total, Gender+" "Total, Gender+" "Total, Gender+" "Total, Gender+" ...
+ $ Status           : chr  "Reported indicator in 2019 only " "Reported indicator in 2019 only " "Reported indicator in 2019 only " "Reported indicator in 2019 only " ...
+ $ Indicators       : chr  "Perceived health, excellent or very good" "Perceived health, excellent or very good" "Perceived health, excellent or very good" "Perceived health, excellent or very good" ...
+ $ Characteristics  : chr  "Number of persons" "Low 95% confidence interval, number of persons" "High 95% confidence interval, number of persons" "Percent" ...
+ $ UOM              : chr  "Number" "Number" "Number" "Percent" ...
+ $ UOM_ID           : int  223 223 223 239 239 239 223 223 223 239 ...
+ $ SCALAR_FACTOR    : chr  "units" "units" "units" "units" ...
+ $ SCALAR_ID        : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ VECTOR           : chr  "v1598161616" "v1598161617" "v1598161618" "v1598161619" ...
+ $ COORDINATE       : chr  "1.1.1.1.1.1" "1.1.1.1.1.2" "1.1.1.1.1.3" "1.1.1.1.1.4" ...
+ $ VALUE            : num  423500 389100 457900 18.6 17.1 ...
+ $ STATUS           : chr  "" "" "" "" ...
+ $ SYMBOL           : logi  NA NA NA NA NA NA ...
+ $ TERMINATED       : logi  NA NA NA NA NA NA ...
+ $ DECIMALS         : int  0 0 0 1 1 1 0 0 0 1 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the categories in the main variables</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>GEO)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Canada"                    "Newfoundland and Labrador"
+ [3] "Prince Edward Island"      "Nova Scotia"              
+ [5] "New Brunswick"             "Quebec"                   
+ [7] "Ontario"                   "Manitoba"                 
+ [9] "Saskatchewan"              "Alberta"                  
+[11] "British Columbia"         </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Indicators)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Perceived health, excellent or very good"                           
+ [2] "Perceived health, fair or poor"                                     
+ [3] "Perceived mental health, excellent or very good"                    
+ [4] "Perceived mental health, fair or poor"                              
+ [5] "Smoking, daily or occasionally"                                     
+ [6] "Smoking, daily"                                                     
+ [7] "Cannabis use in the past 12 months"                                 
+ [8] "Cannabis use in the past 12 months, daily or almost daily"          
+ [9] "Used  e-cigarette or vaping device, past 30 days"                   
+[10] "Self-reported physical activity, average 60 or more minutes per day"
+[11] "Headache"                                                           
+[12] "Stomach ache"                                                       
+[13] "Backache"                                                           
+[14] "Difficulties in getting to sleep"                                   
+[15] "Changed eating habits to manage weight"                             
+[16] "Changed eating habits to manage weight, daily"                      
+[17] "Life satisfaction, satisfied or very satisfied"                     
+[18] "Met sleep guidelines in the last 7 days"                            
+[19] "Preoccupied with a desire to be thinner"                            
+[20] "Preoccupied with a desire to be thinner, daily"                     
+[21] "Vomited to lose weight"                                             
+[22] "Vomited to lose weight, daily"                                      
+[23] "Perceived life stress, most days quite a bit or extremely stressful"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span><span class="st">`</span><span class="at">Age group in 2019</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span><span class="st">`</span><span class="at">Gender in 2019</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Reported indicator in 2019 only "          
+[2] "Reported indicator in 2023 only"           
+[3] "Reported indicator in 2019 and 2023"       
+[4] "Did not report indicator in  2019 and 2023"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Characteristics)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Number of persons"                              
+[2] "Low 95% confidence interval, number of persons" 
+[3] "High 95% confidence interval, number of persons"
+[4] "Percent"                                        
+[5] "Low 95% confidence interval, percent"           
+[6] "High 95% confidence interval, percent"          </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check missing values</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(my_data))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         REF_DATE               GEO             DGUID Age.group.in.2019 
+                0                 0                 0                 0 
+   Gender.in.2019            Status        Indicators   Characteristics 
+                0                 0                 0                 0 
+              UOM            UOM_ID     SCALAR_FACTOR         SCALAR_ID 
+                0                 0                 0                 0 
+           VECTOR        COORDINATE             VALUE            STATUS 
+                0                 0             23940                 0 
+           SYMBOL        TERMINATED          DECIMALS 
+            54648             54648                 0 </code></pre>
+</div>
+</div>
+</section>
+<section id="selecting-and-cleaning-relevant-data" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-and-cleaning-relevant-data">Selecting and Cleaning Relevant Data</h2>
+<p>First, I am selecting just my indicator of interest, which is perceived mental health rated as excellent or very good. I am also limiting the data to just Canada rather than including provincial estimates.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> my_data <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    GEO <span class="sc">==</span> <span class="st">"Canada"</span>,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    Indicators <span class="sc">==</span> <span class="st">"Perceived mental health, excellent or very good"</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  REF_DATE    GEO DGUID     Age.group.in.2019 Gender.in.2019
+1     2023 Canada       Total, 12 to 17 years Total, Gender+
+2     2023 Canada       Total, 12 to 17 years Total, Gender+
+3     2023 Canada       Total, 12 to 17 years Total, Gender+
+4     2023 Canada       Total, 12 to 17 years Total, Gender+
+5     2023 Canada       Total, 12 to 17 years Total, Gender+
+6     2023 Canada       Total, 12 to 17 years Total, Gender+
+                            Status
+1 Reported indicator in 2019 only 
+2 Reported indicator in 2019 only 
+3 Reported indicator in 2019 only 
+4 Reported indicator in 2019 only 
+5 Reported indicator in 2019 only 
+6 Reported indicator in 2019 only 
+                                       Indicators
+1 Perceived mental health, excellent or very good
+2 Perceived mental health, excellent or very good
+3 Perceived mental health, excellent or very good
+4 Perceived mental health, excellent or very good
+5 Perceived mental health, excellent or very good
+6 Perceived mental health, excellent or very good
+                                  Characteristics     UOM UOM_ID SCALAR_FACTOR
+1                               Number of persons  Number    223         units
+2  Low 95% confidence interval, number of persons  Number    223         units
+3 High 95% confidence interval, number of persons  Number    223         units
+4                                         Percent Percent    239         units
+5            Low 95% confidence interval, percent Percent    239         units
+6           High 95% confidence interval, percent Percent    239         units
+  SCALAR_ID      VECTOR  COORDINATE    VALUE STATUS SYMBOL TERMINATED DECIMALS
+1         0 v1598161628 1.1.1.1.3.1 705000.0            NA         NA        0
+2         0 v1598161629 1.1.1.1.3.2 664800.0            NA         NA        0
+3         0 v1598161630 1.1.1.1.3.3 745100.0            NA         NA        0
+4         0 v1598161631 1.1.1.1.3.4     31.2            NA         NA        1
+5         0 v1598161632 1.1.1.1.3.5     29.4            NA         NA        1
+6         0 v1598161633 1.1.1.1.3.6     33.0            NA         NA        1</code></pre>
+</div>
+</div>
+<p>Renaming the column names next, for clarity:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)[<span class="fu">names</span>(my_data) <span class="sc">==</span> <span class="st">"Age.group.in.2019"</span>] <span class="ot">&lt;-</span> <span class="st">"Age"</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)[<span class="fu">names</span>(my_data) <span class="sc">==</span> <span class="st">"Gender.in.2019"</span>] <span class="ot">&lt;-</span> <span class="st">"Gender"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)[<span class="fu">names</span>(my_data) <span class="sc">==</span> <span class="st">"Indicators"</span>] <span class="ot">&lt;-</span> <span class="st">"Indicator"</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)[<span class="fu">names</span>(my_data) <span class="sc">==</span> <span class="st">"Characteristics"</span>] <span class="ot">&lt;-</span> <span class="st">"MetricType"</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)[<span class="fu">names</span>(my_data) <span class="sc">==</span> <span class="st">"VALUE"</span>] <span class="ot">&lt;-</span> <span class="st">"Value"</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "REF_DATE"      "GEO"           "DGUID"         "Age"          
+ [5] "Gender"        "Status"        "Indicator"     "MetricType"   
+ [9] "UOM"           "UOM_ID"        "SCALAR_FACTOR" "SCALAR_ID"    
+[13] "VECTOR"        "COORDINATE"    "Value"         "STATUS"       
+[17] "SYMBOL"        "TERMINATED"    "DECIMALS"     </code></pre>
+</div>
+</div>
+<p>Now I want to remove the “total” categories for both age and gender, since I am interested in comparing the two age groups and two gender categories separately:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> my_data <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    Age <span class="sc">!=</span> <span class="st">"Total, 12 to 17 years"</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>    Gender <span class="sc">!=</span> <span class="st">"Total, Gender+"</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  REF_DATE    GEO DGUID            Age Gender                           Status
+1     2023 Canada       12 to 14 years  Boys+ Reported indicator in 2019 only 
+2     2023 Canada       12 to 14 years  Boys+ Reported indicator in 2019 only 
+3     2023 Canada       12 to 14 years  Boys+ Reported indicator in 2019 only 
+4     2023 Canada       12 to 14 years  Boys+ Reported indicator in 2019 only 
+5     2023 Canada       12 to 14 years  Boys+ Reported indicator in 2019 only 
+6     2023 Canada       12 to 14 years  Boys+ Reported indicator in 2019 only 
+                                        Indicator
+1 Perceived mental health, excellent or very good
+2 Perceived mental health, excellent or very good
+3 Perceived mental health, excellent or very good
+4 Perceived mental health, excellent or very good
+5 Perceived mental health, excellent or very good
+6 Perceived mental health, excellent or very good
+                                       MetricType     UOM UOM_ID SCALAR_FACTOR
+1                               Number of persons  Number    223         units
+2  Low 95% confidence interval, number of persons  Number    223         units
+3 High 95% confidence interval, number of persons  Number    223         units
+4                                         Percent Percent    239         units
+5            Low 95% confidence interval, percent Percent    239         units
+6           High 95% confidence interval, percent Percent    239         units
+  SCALAR_ID      VECTOR  COORDINATE    Value STATUS SYMBOL TERMINATED DECIMALS
+1         0 v1598163836 1.2.2.1.3.1 178700.0            NA         NA        0
+2         0 v1598163837 1.2.2.1.3.2 155600.0            NA         NA        0
+3         0 v1598163838 1.2.2.1.3.3 201800.0            NA         NA        0
+4         0 v1598163839 1.2.2.1.3.4     29.7            NA         NA        1
+5         0 v1598163840 1.2.2.1.3.5     26.1            NA         NA        1
+6         0 v1598163841 1.2.2.1.3.6     33.2            NA         NA        1</code></pre>
+</div>
+</div>
+<p>I am also selecting only the percentage estimates, rather than the number of persons or confidence interval estimates.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> my_data <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(MetricType <span class="sc">==</span> <span class="st">"Percent"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  REF_DATE    GEO DGUID            Age Gender
+1     2023 Canada       12 to 14 years  Boys+
+2     2023 Canada       12 to 14 years  Boys+
+3     2023 Canada       12 to 14 years  Boys+
+4     2023 Canada       12 to 14 years  Boys+
+5     2023 Canada       12 to 14 years Girls+
+6     2023 Canada       12 to 14 years Girls+
+                                      Status
+1           Reported indicator in 2019 only 
+2            Reported indicator in 2023 only
+3        Reported indicator in 2019 and 2023
+4 Did not report indicator in  2019 and 2023
+5           Reported indicator in 2019 only 
+6            Reported indicator in 2023 only
+                                        Indicator MetricType     UOM UOM_ID
+1 Perceived mental health, excellent or very good    Percent Percent    239
+2 Perceived mental health, excellent or very good    Percent Percent    239
+3 Perceived mental health, excellent or very good    Percent Percent    239
+4 Perceived mental health, excellent or very good    Percent Percent    239
+5 Perceived mental health, excellent or very good    Percent Percent    239
+6 Perceived mental health, excellent or very good    Percent Percent    239
+  SCALAR_FACTOR SCALAR_ID      VECTOR  COORDINATE Value STATUS SYMBOL
+1         units         0 v1598163839 1.2.2.1.3.4  29.7            NA
+2         units         0 v1598163977 1.2.2.2.3.4   9.5            NA
+3         units         0 v1598164115 1.2.2.3.3.4  50.2            NA
+4         units         0 v1598164253 1.2.2.4.3.4  10.6            NA
+5         units         0 v1598164391 1.2.3.1.3.4  38.7            NA
+6         units         0 v1598164529 1.2.3.2.3.4   5.9      E     NA
+  TERMINATED DECIMALS
+1         NA        1
+2         NA        1
+3         NA        1
+4         NA        1
+5         NA        1
+6         NA        1</code></pre>
+</div>
+</div>
+</section>
+<section id="checking-variable-types-and-values" class="level2">
+<h2 class="anchored" data-anchor-id="checking-variable-types-and-values">Checking variable types and values</h2>
+<p>Now I want to check that the value column is numeric, since I will be using it to calculate percentages and changes.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check variable types</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(my_data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   16 obs. of  19 variables:
+ $ REF_DATE     : int  2023 2023 2023 2023 2023 2023 2023 2023 2023 2023 ...
+ $ GEO          : chr  "Canada" "Canada" "Canada" "Canada" ...
+ $ DGUID        : chr  "" "" "" "" ...
+ $ Age          : chr  "12 to 14 years" "12 to 14 years" "12 to 14 years" "12 to 14 years" ...
+ $ Gender       : chr  "Boys+" "Boys+" "Boys+" "Boys+" ...
+ $ Status       : chr  "Reported indicator in 2019 only " "Reported indicator in 2023 only" "Reported indicator in 2019 and 2023" "Did not report indicator in  2019 and 2023" ...
+ $ Indicator    : chr  "Perceived mental health, excellent or very good" "Perceived mental health, excellent or very good" "Perceived mental health, excellent or very good" "Perceived mental health, excellent or very good" ...
+ $ MetricType   : chr  "Percent" "Percent" "Percent" "Percent" ...
+ $ UOM          : chr  "Percent" "Percent" "Percent" "Percent" ...
+ $ UOM_ID       : int  239 239 239 239 239 239 239 239 239 239 ...
+ $ SCALAR_FACTOR: chr  "units" "units" "units" "units" ...
+ $ SCALAR_ID    : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ VECTOR       : chr  "v1598163839" "v1598163977" "v1598164115" "v1598164253" ...
+ $ COORDINATE   : chr  "1.2.2.1.3.4" "1.2.2.2.3.4" "1.2.2.3.3.4" "1.2.2.4.3.4" ...
+ $ Value        : num  29.7 9.5 50.2 10.6 38.7 5.9 31.3 24 27.6 9.2 ...
+ $ STATUS       : chr  "" "" "" "" ...
+ $ SYMBOL       : logi  NA NA NA NA NA NA ...
+ $ TERMINATED   : logi  NA NA NA NA NA NA ...
+ $ DECIMALS     : int  1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check that Value is numeric</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.numeric</span>(my_data<span class="sc">$</span>Value)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the remaining categories</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Age)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "12 to 14 years" "15 to 17 years"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Gender)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Boys+"  "Girls+"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Reported indicator in 2019 only "          
+[2] "Reported indicator in 2023 only"           
+[3] "Reported indicator in 2019 and 2023"       
+[4] "Did not report indicator in  2019 and 2023"</code></pre>
+</div>
+</div>
+<p>Looks good!</p>
+</section>
+<section id="combining-categories-and-calculating-change" class="level2">
+<h2 class="anchored" data-anchor-id="combining-categories-and-calculating-change">Combining categories and calculating change</h2>
+<p>Since I am interested in comparing 2019 and 2023, I need to combine some of the reporting categories. “Reported indicator in 2019 only” and “Reported indicator in 2019 and 2023” will be combined to calculate the percentage reporting excellent or very good mental health in 2019. Similarly, “Reported indicator in 2023 only” and “Reported indicator in 2019 and 2023” will be combined to calculate the percentage for 2023.</p>
+<p>First, I will simplify the status labels and standardize them by removing inconsistent spacing in the original dataset.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>my_data<span class="sc">$</span>Status <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_squish</span>(my_data<span class="sc">$</span>Status)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> my_data <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">Status =</span> <span class="fu">case_when</span>(</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>      Status <span class="sc">==</span> <span class="st">"Reported indicator in 2019 only"</span> <span class="sc">~</span> <span class="st">"2019_only"</span>,</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>      Status <span class="sc">==</span> <span class="st">"Reported indicator in 2023 only"</span> <span class="sc">~</span> <span class="st">"2023_only"</span>,</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>      Status <span class="sc">==</span> <span class="st">"Reported indicator in 2019 and 2023"</span> <span class="sc">~</span> <span class="st">"both"</span>,</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>      Status <span class="sc">==</span> <span class="st">"Did not report indicator in 2019 and 2023"</span> <span class="sc">~</span> <span class="st">"neither"</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(my_data<span class="sc">$</span>Status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2019_only" "2023_only" "both"      "neither"  </code></pre>
+</div>
+</div>
+<p>Now, reshaping the data so each status becomes its own column:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>reshaped_data <span class="ot">&lt;-</span> my_data <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Age, Gender, Status, Value) <span class="sc">|&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> Status,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> Value</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>reshaped_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 6
+  Age            Gender `2019_only` `2023_only`  both neither
+  &lt;chr&gt;          &lt;chr&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+1 12 to 14 years Boys+         29.7         9.5  50.2    10.6
+2 12 to 14 years Girls+        38.7         5.9  31.3    24  
+3 15 to 17 years Boys+         27.6         9.2  39      24.2
+4 15 to 17 years Girls+        28.4         9.1  20.4    42.2</code></pre>
+</div>
+</div>
+<p>And calculating the percents for both years, plus the change:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>reshaped_data <span class="ot">&lt;-</span> reshaped_data <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_2019 =</span> <span class="st">`</span><span class="at">2019_only</span><span class="st">`</span> <span class="sc">+</span> both,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_2023 =</span> <span class="st">`</span><span class="at">2023_only</span><span class="st">`</span> <span class="sc">+</span> both,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">change =</span> percent_2023 <span class="sc">-</span> percent_2019</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>reshaped_data</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 9
+  Age     Gender `2019_only` `2023_only`  both neither percent_2019 percent_2023
+  &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+1 12 to … Boys+         29.7         9.5  50.2    10.6         79.9         59.7
+2 12 to … Girls+        38.7         5.9  31.3    24           70           37.2
+3 15 to … Boys+         27.6         9.2  39      24.2         66.6         48.2
+4 15 to … Girls+        28.4         9.1  20.4    42.2         48.8         29.5
+# ℹ 1 more variable: change &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="testing" class="level2">
+<h2 class="anchored" data-anchor-id="testing">Testing</h2>
+<p>First, I will check that the categories are complete and that the filtering process has not inadvertently excluded observations by seeing if the four categories add up to approximately 100%:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>status_totals <span class="ot">&lt;-</span> my_data <span class="sc">|&gt;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Age, Gender) <span class="sc">|&gt;</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_percent =</span> <span class="fu">sum</span>(Value),</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>status_totals</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  Age            Gender total_percent
+  &lt;chr&gt;          &lt;chr&gt;          &lt;dbl&gt;
+1 12 to 14 years Boys+          100  
+2 12 to 14 years Girls+          99.9
+3 15 to 17 years Boys+          100  
+4 15 to 17 years Girls+         100. </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">abs</span>(status_totals<span class="sc">$</span>total_percent <span class="sc">-</span> <span class="dv">100</span>) <span class="sc">&lt;</span> <span class="fl">0.2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>I will also now check for any missing or invalid values.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="sc">!</span><span class="fu">is.na</span>(my_data<span class="sc">$</span>Value))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(my_data<span class="sc">$</span>Value <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span> my_data<span class="sc">$</span>Value <span class="sc">&lt;=</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>Lastly, I want to check that my addition of the two years was correct and that the calculated change is consistent with the two yearly values:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(reshaped_data<span class="sc">$</span>percent_2019 <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>      reshaped_data<span class="sc">$</span>percent_2019 <span class="sc">&lt;=</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(reshaped_data<span class="sc">$</span>percent_2023 <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="sc">&amp;</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>      reshaped_data<span class="sc">$</span>percent_2023 <span class="sc">&lt;=</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>(</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    reshaped_data<span class="sc">$</span>change <span class="sc">-</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>      (reshaped_data<span class="sc">$</span>percent_2023 <span class="sc">-</span> reshaped_data<span class="sc">$</span>percent_2019)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">&lt;</span> <span class="fl">0.0001</span></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>Good to go!</p>
+</section>
+</section>
+<section id="exploratory-analysis" class="level1">
+<h1>Exploratory Analysis</h1>
+<p>First, I will reshape my data into a format that is more suitable for plotting:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> reshaped_data <span class="sc">|&gt;</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Age, Gender, percent_2019, percent_2023) <span class="sc">|&gt;</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(percent_2019, percent_2023),</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Year"</span>,</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Percentage"</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> <span class="fu">recode</span>(</span>
+<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a>      Year,</span>
+<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">percent_2019 =</span> <span class="st">"2019"</span>,</span>
+<span id="cb62-12"><a href="#cb62-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">percent_2023 =</span> <span class="st">"2023"</span></span>
+<span id="cb62-13"><a href="#cb62-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb62-14"><a href="#cb62-14" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Now let’s make a graph comparing 2019 and 2023!</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>plot_data <span class="ot">&lt;-</span> plot_data <span class="sc">|&gt;</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Group =</span> <span class="fu">case_when</span>(</span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>      Age <span class="sc">==</span> <span class="st">"12 to 14 years"</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">"Boys+"</span> <span class="sc">~</span> <span class="st">"Boys, 12–14"</span>,</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>      Age <span class="sc">==</span> <span class="st">"15 to 17 years"</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">"Boys+"</span> <span class="sc">~</span> <span class="st">"Boys, 15–17"</span>,</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>      Age <span class="sc">==</span> <span class="st">"12 to 14 years"</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">"Girls+"</span> <span class="sc">~</span> <span class="st">"Girls, 12–14"</span>,</span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>      Age <span class="sc">==</span> <span class="st">"15 to 17 years"</span> <span class="sc">&amp;</span> Gender <span class="sc">==</span> <span class="st">"Girls+"</span> <span class="sc">~</span> <span class="st">"Girls, 15–17"</span></span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> Year,</span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> Percentage,</span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">color =</span> Group,</span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> Group</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">+</span></span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">20</span>,<span class="dv">90</span>) <span class="sc">+</span> </span>
+<span id="cb63-20"><a href="#cb63-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb63-21"><a href="#cb63-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Changes in Excellent or Very Good Mental Health, 2019–2023"</span>,</span>
+<span id="cb63-22"><a href="#cb63-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb63-23"><a href="#cb63-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb63-24"><a href="#cb63-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Age and Gender"</span></span>
+<span id="cb63-25"><a href="#cb63-25" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb63-26"><a href="#cb63-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_cleaning_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And as a percent change:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(reshaped_data, <span class="fu">aes</span>(<span class="at">x =</span> Gender, <span class="at">y =</span> change, <span class="at">fill =</span> Gender)) <span class="sc">+</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Age) <span class="sc">+</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">35</span>,<span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Change in Excellent or Very Good Mental Health, 2019–2023"</span>,</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Gender"</span>,</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Change (percentage points)"</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="st">"none"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_cleaning_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(my_data, <span class="fu">aes</span>(<span class="at">x =</span> Gender, <span class="at">y =</span> Value, <span class="at">fill =</span> Status)) <span class="sc">+</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Age) <span class="sc">+</span></span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Patterns of Self Reported Mental Health Across Both Years"</span>,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Gender"</span>,</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Percentage"</span>,</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Reporting Year(s)"</span></span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_cleaning_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>gap_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">c</span>(<span class="st">"2019"</span>, <span class="st">"2023"</span>),</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">GenderGap =</span> <span class="fu">c</span>(<span class="fl">13.85</span>, <span class="fl">20.6</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(gap_data, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> GenderGap)) <span class="sc">+</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>,<span class="dv">25</span>)<span class="sc">+</span></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Difference Between Boys' and Girls' Self-Reported Mental Health"</span>,</span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Positive values indicate a higher percentage among boys than girls"</span>,</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Difference (percentage points)"</span></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="data_cleaning_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="surprises-takeaways-etc." class="level1">
+<h1>Surprises, Takeaways, etc.</h1>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

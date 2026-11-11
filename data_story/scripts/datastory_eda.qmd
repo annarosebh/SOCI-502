@@ -1,0 +1,286 @@
+---
+title: "Week 9 practice - EDA"
+author: "AnnaRose Beckett-Herbert"
+date: "10/27/2026"
+format: html
+editor: visual
+---
+
+# Setup, Cleaning, and Testing
+
+## Setup
+
+First things first: reading in my data! My data comes from [here](https://open.canada.ca/data/en/dataset/ef44c64a-6f75-443b-a691-28d232c14587/resource/0dd7da70-2c13-4efb-ba83-a65978001f00).
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+my_data <- read.csv("../data/data_story_data.csv")
+
+names(my_data)
+```
+
+## Initial Inspection
+
+Before making any changes, I want to inspect the dataset and check the variables and categories it contains.
+
+```{r}
+dim(my_data)
+
+str(my_data)
+
+unique(my_data$GEO)
+unique(my_data$Indicators)
+unique(my_data$`Age group in 2019`)
+unique(my_data$`Gender in 2019`)
+unique(my_data$Status)
+unique(my_data$Characteristics)
+
+colSums(is.na(my_data))
+```
+
+Let's take a look.
+
+```{r}
+head(my_data)
+
+tail(my_data)
+```
+
+```{r}
+glimpse(my_data)
+```
+
+## Selecting and Cleaning Relevant Data
+
+First, I am selecting just my indicator of interest, which is perceived mental health rated as excellent or very good. I am also limiting the data to just Canada rather than including provincial estimates.
+
+```{r}
+my_data <- my_data |>
+  filter(
+    GEO == "Canada",
+    Indicators == "Perceived mental health, excellent or very good"
+  )
+
+head(my_data)
+```
+
+Renaming the column names next, for clarity:
+
+```{r}
+names(my_data)[names(my_data) == "Age.group.in.2019"] <- "Age_group"
+names(my_data)[names(my_data) == "Gender.in.2019"] <- "Gender"
+names(my_data)[names(my_data) == "Indicators"] <- "Indicator"
+names(my_data)[names(my_data) == "Characteristics"] <- "MetricType"
+names(my_data)[names(my_data) == "VALUE"] <- "Value"
+
+names(my_data)
+```
+
+Now I want to remove the "total" categories for both age and gender, since I am interested in comparing the two age groups and two gender categories separately:
+
+```{r}
+my_data <- my_data |>
+  filter(
+    Age_group != "Total, 12 to 17 years",
+    Gender != "Total, Gender+"
+  )
+
+head(my_data)
+```
+
+```{r}
+my_data <- my_data |>
+  filter(MetricType == "Number of persons")
+
+head(my_data)
+```
+
+## Checking variable types and values
+
+Now I want to check that the value column is numeric, since I will be using it to calculate percentages and changes.
+
+```{r}
+str(my_data)
+
+is.numeric(my_data$Value)
+
+unique(my_data$Age)
+unique(my_data$Gender)
+unique(my_data$Status)
+```
+
+Looks good!
+
+## Combining categories and calculating change
+
+Since I am interested in comparing 2019 and 2023, I need to combine some of the reporting categories. "Reported indicator in 2019 only" and "Reported indicator in 2019 and 2023" will be combined to calculate the percentage reporting excellent or very good mental health in 2019. Similarly, "Reported indicator in 2023 only" and "Reported indicator in 2019 and 2023" will be combined to calculate the percentage for 2023.
+
+First, I will simplify the status labels and standardize them by removing inconsistent spacing in the original dataset.
+
+```{r}
+my_data$Status <- stringr::str_squish(my_data$Status)
+
+my_data <- my_data |>
+  mutate(
+    Status = case_when(
+      Status == "Reported indicator in 2019 only" ~ "2019_only",
+      Status == "Reported indicator in 2023 only" ~ "2023_only",
+      Status == "Reported indicator in 2019 and 2023" ~ "both",
+      Status == "Did not report indicator in 2019 and 2023" ~ "neither"
+    )
+  )
+
+unique(my_data$Status)
+```
+
+Now, reshaping the data so each status becomes its own column:
+
+```{r}
+reshaped_data <- my_data |>
+  select(Age_group, Gender, Status, Value) |>
+  pivot_wider(
+    names_from = Status,
+    values_from = Value
+  )
+
+reshaped_data
+```
+
+## Calculating change
+
+First let's create total categories for 2019 and 2023
+
+```{r}
+reshaped_data <- reshaped_data |>
+  mutate(
+    number_2019 = `2019_only` + both,
+    number_2023 = `2023_only` + both,
+    change = number_2023 - number_2019
+  )
+
+reshaped_data
+```
+
+Now I can look at the distribution of change by age and gender. I will calculate percents and add that as a column.
+
+```{r}
+reshaped_data <- reshaped_data |>
+  mutate(
+    total_pop = `2019_only` + `2023_only` + both + neither,
+    pct_2019 = (number_2019 / total_pop) * 100,
+    pct_2023 = (number_2023 / total_pop) * 100,
+    pct_point_change = pct_2023 - pct_2019
+  )
+
+reshaped_data
+```
+
+## Testing
+
+First, I will check that the categories are complete and that the filtering process has not inadvertently excluded observations by seeing if the four categories add up to approximately 100%:
+
+```{r}
+status_totals <- reshaped_data |>
+  group_by(Age_group, Gender) |>
+  summarize(
+    pct_2019 = `2019_only` / sum(`2019_only`) *100,
+    pct_2023 = `2023_only` / sum(`2023_only`) *100,
+    pct_both = both / sum(both) *100,
+    pct_neither = neither / sum(neither) *100,
+    .groups = "drop"
+  )
+
+status_totals
+
+# all(abs(status_totals$total_percent - 100) < 0.2)
+```
+
+I will also now check for any missing or invalid values.
+
+```{r}
+all(!is.na(status_totals$pct_2019))
+all(!is.na(status_totals$pct_2023))
+all(!is.na(status_totals$pct_both))
+all(!is.na(status_totals$pct_neither))
+all(status_totals$pct_2019 >= 0 & status_totals$pct_2019 <= 100)
+all(status_totals$pct_2023 >= 0 & status_totals$pct_2023 <= 100)
+all(status_totals$pct_both >= 0 & status_totals$pct_both <= 100)
+all(status_totals$pct_neither >= 0 & status_totals$pct_neither <= 100)
+```
+
+Good to go!
+
+# Exploratory Analysis
+
+First, I will reshape my data into a format that is more suitable for plotting:
+
+```{r}
+plot_data <- reshaped_data |>
+  select(Age_group, Gender, pct_2019, pct_2023) |>
+  pivot_longer(
+    cols = c(pct_2019, pct_2023),
+    names_to = "Year",
+    values_to = "Percentage"
+  ) |>
+  mutate(
+    Year = recode(
+      Year,
+      percent_2019 = "2019",
+      percent_2023 = "2023"
+    )
+  )
+```
+
+Now let's make a graph comparing 2019 and 2023!
+
+```{r}
+plot_data <- plot_data |>
+  mutate(
+    Group = case_when(
+      Age_group == "12 to 14 years" & Gender == "Boys+" ~ "Boys, 12–14",
+      Age_group == "15 to 17 years" & Gender == "Boys+" ~ "Boys, 15–17",
+      Age_group == "12 to 14 years" & Gender == "Girls+" ~ "Girls, 12–14",
+      Age_group == "15 to 17 years" & Gender == "Girls+" ~ "Girls, 15–17"
+    )
+  )
+
+ggplot(plot_data, aes(
+  x = Year,
+  y = Percentage,
+  color = Group,
+  group = Group
+)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  ylim(20,90) + 
+  labs(
+    title = "Changes in Excellent or Very Good Mental Health, 2019–2023",
+    x = "Year",
+    y = "Percentage",
+    color = "Age and Gender"
+  ) +
+  theme_minimal()
+```
+
+And as a percent change:
+
+```{r}
+ggplot(reshaped_data, aes(x = Gender, y = pct_point_change, fill = Gender)) +
+  geom_col() +
+  facet_wrap(~ Age_group) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  ylim(-35,0) +
+  labs(
+    title = "Change in Excellent or Very Good Mental Health, 2019–2023",
+    x = "Gender",
+    y = "Change (percentage points)"
+  ) +
+  theme_minimal() +
+  guides(fill = "none")
+```
+
+# 
