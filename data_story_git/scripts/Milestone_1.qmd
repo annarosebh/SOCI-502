@@ -1,0 +1,42 @@
+---
+author: "AnnaRose Beckett-Herbert"
+date: "10/20/26"
+format: html
+editor: visual
+---
+
+### Question
+
+How did the percentage of Canadian youth reporting excellent or very good mental health change between 2019 and 2023, and how did changes vary by age group and gender?
+
+### Data
+
+My data comes from Statistics Canada, [*Changes in the health characteristics of youth between 2019 and 2023.*](https://open.canada.ca/data/en/dataset/ef44c64a-6f75-443b-a691-28d232c14587) This dataset follows Canadian youth aged 12-14 and 15-17 in 2019 through 2023, reporting on several health indicators by age group and gender. Gender categories are Boys+ and Girls+: per Statscan, non-binary participants are distributed into the other two categories "to protect the confidentiality of responses."
+
+### Simulation
+
+The dataset reports on the percent of each age/gender group reporting excellent or very good mental health in 2019 only, 2023 only, both, or neither. Before analysis, I will combine categories to create overall percentages for both years in each age/gender category and then calculate the change (as shown below).
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(tidyverse)
+library(tibble)
+```
+
+```{r}
+simulated_data <- data.frame(
+  age_group = c("12 to 14", "12 to 14",
+                "15 to 17", "15 to 17"),
+  gender = c("Boys+", "Girls+",
+             "Boys+", "Girls+"),
+  percent_2019 = c(70, 55, 66, 52),
+  percent_2023 = c(60, 45, 55, 48)
+)
+simulated_data$change <-
+  simulated_data$percent_2023 - simulated_data$percent_2019
+print(simulated_data)
+```
+
+### Answer Condition
+
+I will first look to see the overall patterns of change in reported excellent/very good mental health, and then examine specific patterns by age/gender group. I will examine whether the size of the change differs by gender, age group, or their combination. In this simulation, for example, I would conclude that there was an overall decline in reported mental health, with the gender difference varying by age group.
